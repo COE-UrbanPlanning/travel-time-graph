@@ -14,7 +14,7 @@ const CONFIG = {
       // Compile ES2015 using buble
       test: /\.js$/,
       loader: 'buble-loader',
-      include: [resolve('.')],
+      include: [resolve('.'), resolve('./components/model/'), resolve('./components/views/')],
       exclude: [/node_modules/],
       options: {
         objectAssign: 'Object.assign'
@@ -24,7 +24,7 @@ const CONFIG = {
   
   resolve: {
     alias: {
-      'd3$': './d3/d3.webpack.js'
+      'd3$': resolve('./d3/d3.webpack.js')
     }
   },
   

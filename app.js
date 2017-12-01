@@ -3,31 +3,49 @@ import * as d3 from 'd3';
 import Model from './components/model/model.js';
 import MapView from './components/views/MapView.js';
 
+function buildMatrixLookup(arr) {
+  var lookup = {};
+  var indexCol = Object.keys(arr[0]).filter(k => k.match(/\s+/) !== null)[0];
+  arr.forEach(row => {
+    lookup[row[indexCol]] = row;
+  });
+  return lookup;
+}
+
 class App {
-  constructor(matrix, coords) {
-    this.model = new Model();
-    this.model.setMatrix(matrix);
-    this.model.setCoords(coords);
+  constructor(matrices, matrixName, coords) {
+    this.model = new Model(matrices, coords);
+    this.model.setTime(matrixName);
         
     this.views = [
-      new MapView(this.model.state, {center: [53.54, -113.5]})
+      new MapView(this.model.streams.travelTime, {center: [53.54, -113.5]})
     ];
   }
   
   go() {
+    window.app = this;
     this.views.forEach(view => { view.init(); });
   }
 }
 
-const MATRIX_URL = './data/TravelTimeAMcrown.csv';
+const MATRICES_SPEC = [
+  ['AMCr', './data/TravelTimeAMcrown.csv'],
+  ['AMSh', './data/TravelTimeAMshoulder.csv'],
+  ['PMCr', './data/TravelTimePMcrown.csv'],
+  ['PMSh', './data/TravelTimePMshoulder.csv'],
+  ['Off', './data/TravelTimeOff.csv']
+];
+
 const COORDS_URL = './data/taz1669.geojson';
 
-window.d3 = d3;
-
-d3.queue()
-  .defer(d3.csv, MATRIX_URL)
-  .defer(d3.json, COORDS_URL)
-  .await((error, matrix, coords) => {
-    new App(matrix, coords).go();
+var q = d3.queue();
+q.defer(d3.json, COORDS_URL);
+MATRICES_SPEC.forEach(m => { q.defer(d3.csv, m[1]); });
+q.await((error, coords, ...matrices) => {
+  const matrixDict = {};
+  MATRICES_SPEC.forEach((m, i) => {
+    matrixDict[m[0]] = buildMatrixLookup(matrices[i]);
   });
+  new App(matrixDict, MATRICES_SPEC[0][0], coords).go();
+});
   

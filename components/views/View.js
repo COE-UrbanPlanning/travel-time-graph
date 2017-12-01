@@ -1,13 +1,12 @@
 import Rx from 'rxjs/Rx';
 
 export default class View {
-  constructor(observables) {
-    this.data = Rx.Observable.combineLatest(...observables);
-    this.streams = observables;
+  constructor(observable) {
+    this.stream = observable;
   }
   
   init() {
-    this.data.subscribe(data => { this.update(data); });
+    this.stream.subscribe(this.update);
   }
   
   update(data) {

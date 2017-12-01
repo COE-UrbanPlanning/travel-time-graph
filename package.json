@@ -4,6 +4,7 @@
     "start": "http-server -p 3030"
   },
   "dependencies": {
+    "d3-array": "^1.2.1",
     "d3-queue": "^3.0.7",
     "d3-request": "^1.0.5",
     "d3-selection": "^1.2.0",

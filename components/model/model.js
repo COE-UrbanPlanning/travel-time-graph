@@ -1,28 +1,33 @@
 import Rx from 'rxjs/Rx';
 
 export default class Model {
-  constructor() {
-    this.state = {
-      matrix: new Rx.BehaviorSubject([]),
-      coords: new Rx.BehaviorSubject({}),
+  constructor(matrices, coords) {
+    this._matrices = matrices;
+    this._coords = coords;
+    
+    this._state = {
       time: new Rx.BehaviorSubject(''),
       zone: new Rx.BehaviorSubject('')
     };
+    
+    this.streams = {
+      travelTime: Rx.Observable.combineLatest(
+          this._state.time,
+          this._state.zone
+        ).map((time, zone) => {
+          if (!zone) {
+            return [];
+          }
+          return this._matrices[time][zone];
+        })
+    };
   }
   
-  setMatrix(arr) {
-    this.state.matrix.next(this._buildMatrixLookup(arr));
+  setTime(time) {
+    this._state.time.next(time);
   }
   
-  setCoords(json) {
-    this.state.coords.next(json.features);
-  }
-  
-  _buildMatrixLookup(arr) {
-    var lookup = {};
-    arr.forEach(row => {
-      lookup[row[' ']] = row;
-    });
-    return lookup;
+  setZone(zone) {
+    this._state.zone.next(zone);
   }
 }

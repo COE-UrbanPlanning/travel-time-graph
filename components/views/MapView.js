@@ -1,9 +1,11 @@
+import * as d3 from 'd3';
 import Rx from 'rxjs/Rx';
 import L from 'leaflet';
 
 import View from './View.js';
 
 export default class MapView extends View {
+  
   constructor(observables, options) {
     super(observables);
     this.options = options;
@@ -18,10 +20,12 @@ export default class MapView extends View {
     const map = new L.Map('map', {center: this.options.center, zoom: 11})
       .addLayer(new L.TileLayer(mapKey));
     
+    L.svg().addTo(map);
+    
     super.init();
   }
   
-  update() {
-    
+  update(data) {
+    console.log(data);
   }
 }
