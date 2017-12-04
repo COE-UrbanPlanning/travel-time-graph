@@ -1,3 +1,4 @@
+import * as d3 from 'd3';
 import Rx from 'rxjs/Rx';
 
 export default class Model {
@@ -14,11 +15,11 @@ export default class Model {
       travelTime: Rx.Observable.combineLatest(
           this._state.time,
           this._state.zone
-        ).map((time, zone) => {
+        ).map(([time, zone]) => {
           if (!zone) {
             return [];
           }
-          return this._matrices[time][zone];
+          return d3.entries(this._matrices[time][zone]);
         })
     };
   }

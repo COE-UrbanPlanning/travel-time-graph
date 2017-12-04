@@ -6,7 +6,7 @@ export default class View {
   }
   
   init() {
-    this.stream.subscribe(this.update);
+    this.stream.subscribe(this.update.bind(this));
   }
   
   update(data) {

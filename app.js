@@ -18,7 +18,7 @@ class App {
     this.model.setTime(matrixName);
         
     this.views = [
-      new MapView(this.model.streams.travelTime, {center: [53.54, -113.5]})
+      new MapView(this.model.streams.travelTime, {center: [53.54, -113.5], coords: coords})
     ];
   }
   
@@ -46,6 +46,9 @@ q.await((error, coords, ...matrices) => {
   MATRICES_SPEC.forEach((m, i) => {
     matrixDict[m[0]] = buildMatrixLookup(matrices[i]);
   });
-  new App(matrixDict, MATRICES_SPEC[0][0], coords).go();
+  window.app = new App(matrixDict, MATRICES_SPEC[0][0], coords);
+  window.app.go();
 });
+
+window.d3 = d3;
   
