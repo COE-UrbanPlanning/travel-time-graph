@@ -17,9 +17,9 @@ export default class Model {
           this._state.zone
         ).map(([time, zone]) => {
           if (!zone) {
-            return [];
+            return {};
           }
-          return d3.entries(this._matrices[time][zone]);
+          return this._matrices[time][zone];
         })
     };
   }
