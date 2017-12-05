@@ -18,7 +18,7 @@ class App {
     this.model.setTime(matrixName);
         
     this.views = [
-      new MapView(this.model.streams.travelTime, {center: [53.54, -113.5], coords: coords})
+      new MapView(this.model, 'travelTime', {center: [53.54, -113.5], coords: coords})
     ];
   }
   

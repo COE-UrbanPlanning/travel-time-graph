@@ -1,8 +1,9 @@
 import Rx from 'rxjs/Rx';
 
 export default class View {
-  constructor(observable) {
-    this.stream = observable;
+  constructor(model, streamName) {
+    this.model = model;
+    this.stream = this.model.streams[streamName];
   }
   
   init() {

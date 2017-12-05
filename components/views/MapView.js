@@ -14,8 +14,10 @@ const scaleColours = [
 
 export default class MapView extends View {
   
-  constructor(observables, options) {
-    super(observables);
+  constructor(model, streamName, options) {
+    super(model, streamName);
+    
+    this.key = d => d.properties['TAZ_New'];
     this.coords = options.coords;
     this.center = options.center;
     this.scale = d3.scaleThreshold()
@@ -32,15 +34,14 @@ export default class MapView extends View {
     this.map = new L.Map('map', {center: this.center, zoom: 10})
       .addLayer(new L.TileLayer(mapKey));
     
-    L.svg().addTo(this.map);
-    this.svg = d3.select(this.map.getPanes().overlayPane).select('svg');
+    L.svg({clickable: true}).addTo(this.map);
+    this.svg = d3.select(this.map.getPanes().overlayPane).select('svg').attr('pointer-events', 'auto');
     
     super.init();
   }
   
   update(data) {
-    console.log(data);
-    const {coords, map, scale, svg} = this;
+    const {coords, key, map, model, scale, stream, svg} = this;
     
     // prevents duplicate moveend handlers
     if (this._onMoveEnd) {
@@ -56,12 +57,16 @@ export default class MapView extends View {
       features.attr('d', path)
         .attr('opacity', 0.8)
         .attr('stroke', 'rgb(9,9,9)')
+        .style('pointer-events', 'auto')
         .attr('fill', d => {
-          let taz = d.properties['TAZ_New'];
+          let taz = key(d);
           if (data[taz]) {
             return scale(+data[taz]);
           }
           return 'rgb(31,31,31)';
+        })
+        .on('click', d => {
+          model.setZone(key(d));
         });
     }
     
@@ -69,7 +74,7 @@ export default class MapView extends View {
         path = d3.geoPath().projection(transform);
     
     var features = svg.select('g').selectAll('path')
-        .data(coords.features, d => d.properties['TAZ_New']);
+        .data(coords.features, key);
     
     var allFeatures = features.enter()
         .append('path')
@@ -78,7 +83,6 @@ export default class MapView extends View {
     allFeatures.call(setFeatureProperties);
     
     function reset() {
-      console.log('reset');
       allFeatures.attr('d', path);
     }
     
