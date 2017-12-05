@@ -20,9 +20,21 @@ export default class MapView extends View {
     this.key = d => d.properties['TAZ_New'];
     this.coords = options.coords;
     this.center = options.center;
+    
+    this._dragging = false;
+    this.isDragging = this.isDragging.bind(this);
+    
     this.scale = d3.scaleThreshold()
         .domain([5, 15, 30, 60])
         .range(scaleColours);
+  }
+  
+  isDragging() {
+    return this._dragging;
+  }
+  
+  setDragging(bool) {
+    this._dragging = bool;
   }
   
   init() {
@@ -37,11 +49,14 @@ export default class MapView extends View {
     L.svg({clickable: true}).addTo(this.map);
     this.svg = d3.select(this.map.getPanes().overlayPane).select('svg').attr('pointer-events', 'auto');
     
+    this.map.on('movestart', () => { this.setDragging(true); });
+    this.map.on('moveend', () => { this.setDragging(false); });
+    
     super.init();
   }
   
   update(data) {
-    const {coords, key, map, model, scale, stream, svg} = this;
+    const {coords, key, map, model, scale, stream, svg, isDragging} = this;
     
     // prevents duplicate moveend handlers
     if (this._onMoveEnd) {
@@ -66,7 +81,9 @@ export default class MapView extends View {
           return 'rgb(31,31,31)';
         })
         .on('click', d => {
-          model.setZone(key(d));
+          if (!isDragging()) {
+            model.setZone(key(d));
+          }
         });
     }
     
