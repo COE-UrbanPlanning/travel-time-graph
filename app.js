@@ -2,6 +2,7 @@ import * as d3 from 'd3';
 
 import Model from './components/model/model.js';
 import MapView from './components/views/MapView.js';
+import TooltipView from './components/views/TooltipView.js';
 
 function buildMatrixLookup(arr) {
   var lookup = {};
@@ -15,10 +16,11 @@ function buildMatrixLookup(arr) {
 class App {
   constructor(matrices, matrixName, coords) {
     this.model = new Model(matrices, coords);
-    this.model.setTime(matrixName);
+    this.model.setData('time', matrixName);
         
     this.views = [
-      new MapView(this.model, 'travelTime', {center: [53.54, -113.5], coords: coords})
+      new MapView(this.model, 'travelTime', {center: [53.54, -113.5], coords: coords}),
+      new TooltipView(this.model, 'zoneUnderMouse')
     ];
   }
   

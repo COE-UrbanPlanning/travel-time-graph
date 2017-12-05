@@ -5,3 +5,12 @@ body {
 path {
   shape-rendering: crispEdges;
 }
+
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+}
+
+.tooltip.hidden {
+  display: none;
+}

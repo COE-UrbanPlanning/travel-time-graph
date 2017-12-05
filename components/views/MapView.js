@@ -1,5 +1,4 @@
 import * as d3 from 'd3';
-import Rx from 'rxjs/Rx';
 import L from 'leaflet';
 
 import View from './View.js';
@@ -38,6 +37,8 @@ export default class MapView extends View {
   }
   
   init() {
+    var model = this.model;
+    
     d3.select('#map')
       .style('width', window.innerWidth + 'px')
       .style('height', window.innerHeight + 'px');
@@ -51,6 +52,9 @@ export default class MapView extends View {
     
     this.map.on('movestart', () => { this.setDragging(true); });
     this.map.on('moveend', () => { this.setDragging(false); });
+    this.svg.on('mousemove', function() {
+      model.setData('mousePosition', d3.mouse(this));
+    });
     
     super.init();
   }
@@ -82,8 +86,14 @@ export default class MapView extends View {
         })
         .on('click', d => {
           if (!isDragging()) {
-            model.setZone(key(d));
+            model.setData('selectedZone', key(d));
           }
+        })
+        .on('mouseenter', d => {
+          model.setData('mouseZone', key(d));
+        })
+        .on('mouseleave', d => {
+          model.setData('mouseZone', '');
         });
     }
     

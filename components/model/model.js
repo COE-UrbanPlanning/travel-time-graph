@@ -8,27 +8,42 @@ export default class Model {
     
     this._state = {
       time: new Rx.BehaviorSubject(''),
-      zone: new Rx.BehaviorSubject('')
+      selectedZone: new Rx.BehaviorSubject(''),
+      mouseZone: new Rx.BehaviorSubject(''),
+      mousePosition: new Rx.BehaviorSubject([])
     };
     
     this.streams = {
       travelTime: Rx.Observable.combineLatest(
-          this._state.time,
-          this._state.zone
-        ).map(([time, zone]) => {
-          if (!zone) {
-            return {};
-          }
-          return this._matrices[time][zone];
-        })
+        this._state.time,
+        this._state.selectedZone
+      ).map(([time, zone]) => {
+        if (!zone) {
+          return {};
+        }
+        return this._matrices[time][zone];
+      }),
+      
+      zoneUnderMouse: Rx.Observable.combineLatest(
+        this._state.time,
+        this._state.selectedZone,
+        this._state.mouseZone,
+        this._state.mousePosition
+      ).map(([time, sZone, mZone, mouse]) => {
+        if (!sZone || !mZone || !time) {
+          return {};
+        }
+        return {
+          zone: mZone,
+          mouseX: mouse[0],
+          mouseY: mouse[1],
+          time: this._matrices[time][sZone][mZone]
+        };
+      })
     };
   }
   
-  setTime(time) {
-    this._state.time.next(time);
-  }
-  
-  setZone(zone) {
-    this._state.zone.next(zone);
+  setData(stream, data) {
+    this._state[stream].next(data);
   }
 }
