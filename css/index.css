@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  font-family: 'Open Sans';
 }
 
 path {
@@ -9,6 +10,17 @@ path {
 .tooltip {
   position: absolute;
   pointer-events: none;
+  z-index: 999;
+  border-radius: 3px;
+  padding: 10px;
+  background-color: rgb(68,68,68);
+  color: white;
+  font-size: 20px;
+}
+
+.tooltip-time-number {
+  font-size: 30px;
+  padding-right: 5px;
 }
 
 .tooltip.hidden {

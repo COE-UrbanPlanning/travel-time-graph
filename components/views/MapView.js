@@ -3,14 +3,6 @@ import L from 'leaflet';
 
 import View from './View.js';
 
-const scaleColours = [
-  'rgb(218,218,235)',
-  'rgb(188,189,220)',
-  'rgb(158,154,200)',
-  'rgb(117,107,177)',
-  'rgb(84,39,143)'
-];
-
 export default class MapView extends View {
   
   constructor(model, streamName, options) {
@@ -19,13 +11,10 @@ export default class MapView extends View {
     this.key = d => d.properties['TAZ_New'];
     this.coords = options.coords;
     this.center = options.center;
+    this.scale = options.scale;
     
     this._dragging = false;
     this.isDragging = this.isDragging.bind(this);
-    
-    this.scale = d3.scaleThreshold()
-        .domain([5, 15, 30, 60])
-        .range(scaleColours);
   }
   
   isDragging() {

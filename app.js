@@ -13,14 +13,36 @@ function buildMatrixLookup(arr) {
   return lookup;
 }
 
+// const scaleColours = [
+  // 'rgb(218,218,235)',
+  // 'rgb(188,189,220)',
+  // 'rgb(158,154,200)',
+  // 'rgb(117,107,177)',
+  // 'rgb(84,39,143)'
+// ];
+
+const scaleColours = [
+  'rgb(243,203,211)',
+  'rgb(234,169,189)',
+  'rgb(221,136,172)',
+  'rgb(202,105,157)',
+  'rgb(177,77,142)',
+  'rgb(145,53,125)',
+  'rgb(108,33,103)'
+];
+
+const scale = d3.scaleThreshold()
+    .domain([10, 20, 30, 40, 50, 60])
+    .range(scaleColours);
+
 class App {
   constructor(matrices, matrixName, coords) {
     this.model = new Model(matrices, coords);
     this.model.setData('time', matrixName);
         
     this.views = [
-      new MapView(this.model, 'travelTime', {center: [53.54, -113.5], coords: coords}),
-      new TooltipView(this.model, 'zoneUnderMouse')
+      new MapView(this.model, 'travelTime', {center: [53.54, -113.5], coords: coords, scale: scale}),
+      new TooltipView(this.model, 'zoneUnderMouse', {scale: scale})
     ];
   }
   
