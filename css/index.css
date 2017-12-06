@@ -13,7 +13,7 @@ path {
   z-index: 999;
   border-radius: 3px;
   padding: 10px;
-  background-color: rgb(68,68,68);
+  background-color: rgba(68,68,68,0.95);
   color: white;
   font-size: 20px;
 }

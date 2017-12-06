@@ -19,9 +19,12 @@ export default class Model {
         this._state.selectedZone
       ).map(([time, zone]) => {
         if (!zone) {
-          return {};
+          return {times: {}};
         }
-        return this._matrices[time][zone];
+        return {
+          zone: zone,
+          times: this._matrices[time][zone]
+        };
       }),
       
       zoneUnderMouse: Rx.Observable.combineLatest(

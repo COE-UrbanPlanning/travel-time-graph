@@ -62,12 +62,27 @@ export default class MapView extends View {
     function setFeatureProperties(features) {
       features.attr('d', path)
         .attr('opacity', 0.8)
-        .attr('stroke', 'rgb(9,9,9)')
+        .attr('stroke', d => {
+          if (data.zone === key(d)) {
+            return 'white';
+          }
+          return 'rgb(9,9,9)';
+        })
+        .attr('stroke-width', d => {
+          if (data.zone === key(d)) {
+            return 5;
+          }
+          return 1;
+        })
         .style('pointer-events', 'auto')
         .attr('fill', d => {
           let taz = key(d);
-          if (data[taz]) {
-            return scale(+data[taz]);
+          if (data.times[taz]) {
+            if (data.zone === taz) {
+              // selected
+              return 'white';
+            }
+            return scale(+data.times[taz]);
           }
           return 'rgb(31,31,31)';
         })
@@ -96,6 +111,9 @@ export default class MapView extends View {
         .merge(features);
     
     allFeatures.call(setFeatureProperties);
+    allFeatures.sort((a, b) => {
+      return data.zone === key(a);
+    });
     
     function reset() {
       allFeatures.attr('d', path);
