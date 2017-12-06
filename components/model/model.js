@@ -35,8 +35,8 @@ export default class Model {
         }
         return {
           zone: mZone,
-          mouseX: mouse[0],
-          mouseY: mouse[1],
+          mouseX: mouse.x,
+          mouseY: mouse.y,
           time: this._matrices[time][sZone][mZone]
         };
       })

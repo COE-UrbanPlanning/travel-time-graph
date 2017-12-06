@@ -14,17 +14,18 @@ export default class MapView extends View {
     this.scale = options.scale;
     
     this._dragging = false;
-    this.isDragging = this.isDragging.bind(this);
+    this.wasDragging = this.wasDragging.bind(this);
+    this._setDragging = this._setDragging.bind(this);
   }
   
-  isDragging() {
+  wasDragging() {
     return this._dragging;
   }
   
-  setDragging(bool) {
+  _setDragging(bool) {
     this._dragging = bool;
   }
-  
+    
   init() {
     var model = this.model;
     
@@ -39,17 +40,14 @@ export default class MapView extends View {
     L.svg({clickable: true}).addTo(this.map);
     this.svg = d3.select(this.map.getPanes().overlayPane).select('svg').attr('pointer-events', 'auto');
     
-    this.map.on('movestart', () => { this.setDragging(true); });
-    this.map.on('moveend', () => { this.setDragging(false); });
-    this.svg.on('mousemove', function() {
-      model.setData('mousePosition', d3.mouse(this));
-    });
-    
+    this.map.on('movestart', () => { this._setDragging(true); });
+    this.map.on('mousemove', (e) => { model.setData('mousePosition', e.containerPoint); });
+    this.svg.on('click', () => { this._setDragging(false); });
     super.init();
   }
   
   update(data) {
-    const {coords, key, map, model, scale, stream, svg, isDragging} = this;
+    const {coords, key, map, model, scale, stream, svg, wasDragging, _setDragging} = this;
     
     // prevents duplicate moveend handlers
     if (this._onMoveEnd) {
@@ -74,9 +72,10 @@ export default class MapView extends View {
           return 'rgb(31,31,31)';
         })
         .on('click', d => {
-          if (!isDragging()) {
+          if (!wasDragging()) {
             model.setData('selectedZone', key(d));
           }
+          _setDragging(false);
         })
         .on('mouseenter', d => {
           model.setData('mouseZone', key(d));

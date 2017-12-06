@@ -13,14 +13,6 @@ function buildMatrixLookup(arr) {
   return lookup;
 }
 
-// const scaleColours = [
-  // 'rgb(218,218,235)',
-  // 'rgb(188,189,220)',
-  // 'rgb(158,154,200)',
-  // 'rgb(117,107,177)',
-  // 'rgb(84,39,143)'
-// ];
-
 const scaleColours = [
   'rgb(243,203,211)',
   'rgb(234,169,189)',
