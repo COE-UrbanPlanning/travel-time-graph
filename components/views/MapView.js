@@ -42,7 +42,7 @@ export default class MapView extends View {
     
     this.map.on('movestart', () => { this._setDragging(true); });
     this.map.on('mousemove', (e) => { model.setData('mousePosition', e.containerPoint); });
-    this.svg.on('click', () => { this._setDragging(false); });
+    this.map.on('zoomend', () => { this._setDragging(false); });
     super.init();
   }
   
