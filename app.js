@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import Model from './components/model/model.js';
 import MapView from './components/views/MapView.js';
 import TooltipView from './components/views/TooltipView.js';
+import InfoView from './components/views/InfoView.js';
 
 function buildMatrixLookup(arr) {
   var lookup = {};
@@ -34,7 +35,8 @@ class App {
         
     this.views = [
       new MapView(this.model, 'travelTime', {center: [53.54, -113.5], coords: coords, scale: scale}),
-      new TooltipView(this.model, 'zoneUnderMouse', {scale: scale})
+      new TooltipView(this.model, 'zoneUnderMouse', {scale: scale}),
+      new InfoView(this.model, 'travelTime', {scale: scale})
     ];
   }
   

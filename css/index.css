@@ -26,3 +26,31 @@ path {
 .tooltip.hidden {
   visibility: hidden;
 }
+
+#zone-info {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 998;
+  color: white;
+  background-color: rgba(32,32,32,0.9);
+  padding: 15px;
+}
+
+#info-title {
+  font-size: 24px;
+}
+
+#info-current, #info-current-initial {
+  font-size: 20px;
+}
+
+#info-current {
+  display: none;
+}
+
+.info-zone {
+  color: rgb(234,169,189);
+  font-weight: bold;
+}
