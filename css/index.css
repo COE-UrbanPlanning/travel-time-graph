@@ -60,3 +60,7 @@ path {
   color: rgb(234,169,189);
   font-weight: bold;
 }
+
+.graph {
+  overflow: visible;
+}
