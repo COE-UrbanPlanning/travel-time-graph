@@ -9,7 +9,9 @@ function buildMatrixLookup(arr) {
   var lookup = {};
   var indexCol = Object.keys(arr[0]).filter(k => k.match(/\s+/) !== null)[0];
   arr.forEach(row => {
-    lookup[row[indexCol]] = row;
+    let idx = row[indexCol];
+    delete row[indexCol];
+    lookup[idx] = row;
   });
   return lookup;
 }

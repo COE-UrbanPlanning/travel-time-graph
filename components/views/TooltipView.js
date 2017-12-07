@@ -38,10 +38,10 @@ export default class TooltipView extends View {
           .style('color', scale(minutes))
           .text('~' + minutes);
       
+      tooltip.classed('hidden', false);
+      
       tooltip.style('left', data['mouseX'] + 'px')
           .style('top', data['mouseY'] - tooltip.node().getBoundingClientRect().height + 'px');
-      
-      tooltip.classed('hidden', false);
     } else {
       tooltip.classed('hidden', true);
     }

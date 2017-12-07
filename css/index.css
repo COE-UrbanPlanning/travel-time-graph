@@ -24,11 +24,12 @@ path {
 }
 
 .tooltip.hidden {
-  visibility: hidden;
+  display: none;
 }
 
 #zone-info {
-  display: flex;
+  display: none;
+  align-items: flex-end;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -36,6 +37,11 @@ path {
   color: white;
   background-color: rgba(32,32,32,0.9);
   padding: 15px;
+  padding-bottom: 0;
+}
+
+#info-words {
+  padding-bottom: 15px;
 }
 
 #info-title {
