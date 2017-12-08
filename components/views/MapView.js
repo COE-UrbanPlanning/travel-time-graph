@@ -75,6 +75,8 @@ export default class MapView extends View {
           return 1;
         })
         .style('pointer-events', 'auto')
+        .transition()
+        .duration(500)
         .attr('fill', d => {
           let taz = key(d);
           if (data.times[taz]) {
@@ -85,8 +87,9 @@ export default class MapView extends View {
             return scale(+data.times[taz]);
           }
           return 'rgb(31,31,31)';
-        })
-        .on('click', d => {
+        });
+        
+        features.on('click', d => {
           if (!wasDragging()) {
             model.setData('selectedZone', key(d));
           }
