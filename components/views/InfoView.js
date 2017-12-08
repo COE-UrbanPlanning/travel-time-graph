@@ -17,10 +17,9 @@ export default class InfoView extends View {
     this.xScale = d3.scaleLinear()
         .range([0, 200]);
     this.yScale = d3.scaleLinear();
-    this.line = d3.line();
-    
-    // this._buildGradient = this._buildGradient.bind(this);
-    // this._setGradient = this._setGradient.bind(this);
+    // this.line = d3.line().curve(d3.curveCatmullRom);
+    this.line = d3.line().curve(d3.curveBasis);
+    this.area = d3.area().curve(d3.curveBasis);
   }
 
   _makeBins(values, step) {
@@ -73,7 +72,10 @@ export default class InfoView extends View {
         .append('linearGradient')
         .attr("id", "line-gradient")
         .attr("gradientUnits", "userSpaceOnUse");
-    this.graphSvg.append('path');
+    this.graphSvg.append('path')
+        .classed('graph-line', true);
+    this.graphSvg.append('path')
+        .classed('graph-area', true);
 
     super.init();
   }
@@ -105,11 +107,22 @@ export default class InfoView extends View {
     this.line
         .x(d => this.xScale(d[0]))
         .y(d => this.yScale(d[1]));
+        
+    this.area
+        .x(d => this.xScale(d[0]))
+        .y0(this.div.node().getBoundingClientRect().height - 15)
+        .y1(d => this.yScale(d[1]));
 
-    this.graphSvg.select('path')
+    this.graphSvg.select('.graph-line')
         .attr('fill', 'none')
         .attr('stroke', 'url(#line-gradient)')
         .attr('stroke-width', '2')
+        .attr('d', this.line(graphData));
+        
+    this.graphSvg.select('.graph-area')
+        .attr('fill', 'url(#line-gradient)')
+        .attr('stroke', 'none')
+        .attr('opacity', 0.5)
         .attr('d', this.line(graphData));
   }
 }
