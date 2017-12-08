@@ -114,12 +114,16 @@ export default class InfoView extends View {
         .y1(d => this.yScale(d[1]));
 
     this.graphSvg.select('.graph-line')
+        .transition()
+        .duration(500)
         .attr('fill', 'none')
         .attr('stroke', 'url(#line-gradient)')
         .attr('stroke-width', '2')
         .attr('d', this.line(graphData));
         
     this.graphSvg.select('.graph-area')
+        .transition()
+        .duration(500)
         .attr('fill', 'url(#line-gradient)')
         .attr('stroke', 'none')
         .attr('opacity', 0.5)

@@ -6,3 +6,4 @@ export * from 'd3-collection';
 export * from 'd3-geo';
 export * from 'd3-scale';
 export * from 'd3-shape';
+export * from 'd3-transition';
