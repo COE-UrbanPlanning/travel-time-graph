@@ -51,6 +51,8 @@ export default class Model {
   }
   
   setData(stream, data) {
-    this._state[stream].next(data);
+    if (this._state[stream].value !== data) {
+      this._state[stream].next(data);
+    }
   }
 }
