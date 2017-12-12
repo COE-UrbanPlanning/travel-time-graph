@@ -25,13 +25,18 @@ export default class MapView extends View {
   _setDragging(bool) {
     this._dragging = bool;
   }
-    
-  init() {
-    var model = this.model;
-    
+   
+  _setMapSize() {
     d3.select('#map')
       .style('width', window.innerWidth + 'px')
       .style('height', window.innerHeight + 'px');
+  }
+   
+  init() {
+    var model = this.model;
+    
+    this._setMapSize();
+    window.onresize = this._setMapSize;
     
     const mapKey = 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png';
     this.map = new L.Map('map', {center: this.center, zoom: 10})
@@ -43,6 +48,7 @@ export default class MapView extends View {
     this.map.on('movestart', () => { this._setDragging(true); });
     this.map.on('mousemove', (e) => { model.setData('mousePosition', e.containerPoint); });
     this.map.on('zoomend', () => { this._setDragging(false); });
+    
     super.init();
   }
   
@@ -61,7 +67,7 @@ export default class MapView extends View {
     
     function setFeatureProperties(features) {
       features.attr('d', path)
-        .attr('opacity', 0.8)
+        .attr('opacity', 0.75)
         .attr('stroke', d => {
           if (data.zone === key(d)) {
             return 'white';
