@@ -30,10 +30,10 @@ export default class TooltipView extends View {
   update(data) {
     const {scale, tooltip} = this;
     
-    if (data['zone'] && data['mouseX'] && data['mouseY']) {
+    if (data['zoneName'] && data['mouseX'] && data['mouseY']) {
       const minutes = Math.round(data['time']);
       tooltip.select('.tooltip-zone')
-          .text(data['zone']);
+          .text(data['zoneName']);
       tooltip.select('.tooltip-time-number')
           .style('color', scale(minutes))
           .text('~' + minutes);

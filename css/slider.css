@@ -1,0 +1,52 @@
+#slider {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 998;
+  color: white;
+  background-color: rgba(32,32,32,0.9);
+  padding: 15px;
+}
+
+#slider svg {
+  overflow: visible;
+}
+
+.slider-ticks {
+  font: 10px sans-serif;
+}
+
+.slider-track,
+.slider-track-inset,
+.slider-track-overlay {
+  stroke-linecap: round;
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
+}
+
+.slider-track {
+  stroke: #000;
+  stroke-opacity: 0.3;
+  stroke-width: 10px;
+}
+
+.slider-track-inset {
+  stroke: #ddd;
+  stroke-width: 8px;
+}
+
+.slider-track-overlay {
+  pointer-events: stroke;
+  stroke-width: 50px;
+  stroke: transparent;
+}
+
+.slider-handle {
+  fill: #fff;
+  stroke: #000;
+  stroke-opacity: 0.5;
+  stroke-width: 1.25px;
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
+}

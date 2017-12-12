@@ -4,6 +4,7 @@ import Model from './components/model/model.js';
 import MapView from './components/views/MapView.js';
 import TooltipView from './components/views/TooltipView.js';
 import InfoView from './components/views/InfoView.js';
+import SliderView from './components/views/SliderView.js';
 
 function buildMatrixLookup(arr) {
   var lookup = {};
@@ -15,6 +16,17 @@ function buildMatrixLookup(arr) {
   });
   return lookup;
 }
+
+const MATRICES_SPEC = [
+  ['AMSh', './data/TravelTimeAMshoulder.csv'],
+  ['AMCr', './data/TravelTimeAMcrown.csv'],
+  ['Off', './data/TravelTimeOff.csv'],
+  ['PMSh', './data/TravelTimePMshoulder.csv'],
+  ['PMCr', './data/TravelTimePMcrown.csv']
+];
+
+const COORDS_URL = './data/taz1669.geojson';
+const LABELS_URL = './data/TAZ1669_Labels.csv';
 
 const scaleColours = [
   'rgb(243,203,211)',
@@ -31,14 +43,15 @@ const scale = d3.scaleThreshold()
     .range(scaleColours);
 
 class App {
-  constructor(matrices, matrixName, coords) {
-    this.model = new Model(matrices, coords);
+  constructor(matrices, matrixName, coords, labels) {
+    this.model = new Model(matrices, coords, labels);
     this.model.setData('time', matrixName);
         
     this.views = [
       new MapView(this.model, 'travelTime', {center: [53.54, -113.5], coords: coords, scale: scale}),
       new TooltipView(this.model, 'zoneUnderMouse', {scale: scale}),
-      new InfoView(this.model, 'travelTime', {scale: scale})
+      new InfoView(this.model, 'travelTime', {scale: scale}),
+      new SliderView(this.model, 'time', {times: MATRICES_SPEC.map(m => m[0])})
     ];
   }
   
@@ -48,25 +61,21 @@ class App {
   }
 }
 
-const MATRICES_SPEC = [
-  ['AMCr', './data/TravelTimeAMcrown.csv'],
-  ['AMSh', './data/TravelTimeAMshoulder.csv'],
-  ['PMCr', './data/TravelTimePMcrown.csv'],
-  ['PMSh', './data/TravelTimePMshoulder.csv'],
-  ['Off', './data/TravelTimeOff.csv']
-];
-
-const COORDS_URL = './data/taz1669.geojson';
-
 var q = d3.queue();
-q.defer(d3.json, COORDS_URL);
+q.defer(d3.json, COORDS_URL)
+  .defer(d3.csv, LABELS_URL)
 MATRICES_SPEC.forEach(m => { q.defer(d3.csv, m[1]); });
-q.await((error, coords, ...matrices) => {
+q.await((error, coords, labels, ...matrices) => {
+  const labelDict = {};
+  labels.forEach(l => {
+    labelDict[l['TAZ_New']] = l['Label'];
+  });
+  
   const matrixDict = {};
   MATRICES_SPEC.forEach((m, i) => {
     matrixDict[m[0]] = buildMatrixLookup(matrices[i]);
   });
-  window.app = new App(matrixDict, MATRICES_SPEC[0][0], coords);
+  window.app = new App(matrixDict, MATRICES_SPEC[0][0], coords, labelDict);
   window.app.go();
 });
 
