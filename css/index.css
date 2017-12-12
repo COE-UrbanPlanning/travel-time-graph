@@ -57,6 +57,9 @@ path {
 
 #info-current {
   display: none;
+  position: relative;
+  white-space: nowrap;
+  width: 300px;
 }
 
 .info-zone {

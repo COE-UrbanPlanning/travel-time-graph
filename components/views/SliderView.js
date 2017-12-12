@@ -6,7 +6,12 @@ export default class SliderView extends View {
   constructor(model, streamName, options) {
     super(model, streamName);
     
-    this.labels = options.times;
+    this._labelDict = {};
+    options.times.forEach(l => {
+      this._labelDict[l[1]] = l[0];
+    });
+    this.labels = options.times.map(t => t[1]);
+    
     const range = d3.range(this.labels.length).map(
         d3.scaleLinear()
           .domain([0, this.labels.length-1])
@@ -27,7 +32,7 @@ export default class SliderView extends View {
   }
   
   init() {
-    const {model, scale, _invert} = this;
+    const {model, scale, _invert, _labelDict} = this;
     this.div.style('display', 'flex');
     var track = this.svg.append('line')
         .classed('slider-track', true)
@@ -63,7 +68,7 @@ export default class SliderView extends View {
           const x = d3.mouse(this)[0];
           const px = scale.range().reduce((prev, curr) => Math.abs(curr - x) < Math.abs(prev - x) ? curr : prev);
           handle.attr('cx', px);
-          model.setData('time', _invert(px));
+          model.setData('time', _labelDict[_invert(px)]);
         })
       );
     

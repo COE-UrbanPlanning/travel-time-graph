@@ -88,7 +88,7 @@ export default class InfoView extends View {
       return;
     }
     this.div.select('#info-current-initial').style('display', 'none');
-    this.div.select('#info-current').style('display', 'initial');
+    this.div.select('#info-current').style('display', 'inline-block');
     this.zoneSpan.text(data.zoneName);
 
     this.graphSvg.attr('height', this.div.node().getBoundingClientRect().height - 15)

@@ -46,12 +46,12 @@ class App {
   constructor(matrices, matrixName, coords, labels) {
     this.model = new Model(matrices, coords, labels);
     this.model.setData('time', matrixName);
-        
+    
     this.views = [
       new MapView(this.model, 'travelTime', {center: [53.54, -113.5], coords: coords, scale: scale}),
       new TooltipView(this.model, 'zoneUnderMouse', {scale: scale}),
       new InfoView(this.model, 'travelTime', {scale: scale}),
-      new SliderView(this.model, 'time', {times: MATRICES_SPEC.map(m => m[0])})
+      new SliderView(this.model, 'time', {times: MATRICES_SPEC.map(m => [m[0], m[2]])})
     ];
   }
   
