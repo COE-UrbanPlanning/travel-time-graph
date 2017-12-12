@@ -18,11 +18,11 @@ function buildMatrixLookup(arr) {
 }
 
 const MATRICES_SPEC = [
-  ['AMSh', './data/TravelTimeAMshoulder.csv'],
-  ['AMCr', './data/TravelTimeAMcrown.csv'],
-  ['Off', './data/TravelTimeOff.csv'],
-  ['PMSh', './data/TravelTimePMshoulder.csv'],
-  ['PMCr', './data/TravelTimePMcrown.csv']
+  ['AMSh', './data/TravelTimeAMshoulder.csv', 'AM'],
+  ['AMCr', './data/TravelTimeAMcrown.csv', 'AM Peak'],
+  ['Off', './data/TravelTimeOff.csv', 'Midday'],
+  ['PMSh', './data/TravelTimePMshoulder.csv', 'PM'],
+  ['PMCr', './data/TravelTimePMcrown.csv', 'PM Peak']
 ];
 
 const COORDS_URL = './data/taz1669.geojson';

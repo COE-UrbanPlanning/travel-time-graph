@@ -23,7 +23,7 @@ export default class SliderView extends View {
     this.svg = this.div.append('svg')
         .classed('slider', true)
         .attr('width', 400)
-        .attr('height', 50);
+        .attr('height', 100);
   }
   
   init() {
@@ -39,6 +39,19 @@ export default class SliderView extends View {
         .classed('slider-track-inset', true)
       .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
         .classed('slider-track-overlay', true);
+    
+    scale.domain().forEach(time => {
+      this.svg.insert('circle', '.slider-track-overlay')
+          .classed('slider-tick', true)
+          .attr('cx', scale(time))
+          .attr('cy', 50)
+          .attr('r', 5);
+      this.svg.insert('text', '.slider-track-overlay')
+          .classed('slider-tick-text', true)
+          .attr('x', scale(time))
+          .attr('y', 60)
+          .text(time);
+    });
     
     var handle = this.svg.insert('circle', '.slider-track-overlay')
         .classed('slider-handle', true)

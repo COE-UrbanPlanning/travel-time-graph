@@ -12,8 +12,15 @@
   overflow: visible;
 }
 
-.slider-ticks {
-  font: 10px sans-serif;
+.slider-tick {
+  fill: rgb(32,32,32);
+  opacity: 0.5;
+}
+
+.slider-tick-text {
+  text-anchor: middle;
+  fill: white;
+  dominant-baseline: text-before-edge;
 }
 
 .slider-track,
