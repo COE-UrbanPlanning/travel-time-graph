@@ -1,0 +1,45 @@
+{
+  "matrices": [
+    {
+      "time": "AMSh",
+      "location": "./data/TravelTimeAMshoulder.csv",
+      "label": "AM"
+    },
+    {
+      "time": "AMCr", 
+      "location": "./data/TravelTimeAMcrown.csv", 
+      "label": "AM Peak"
+    },
+    {
+      "time": "Off",
+      "location": "./data/TravelTimeOff.csv",
+      "label": "Midday"
+    },
+    {
+      "time": "PMSh",
+      "location": "./data/TravelTimePMshoulder.csv",
+      "label": "PM"
+    },
+    {
+      "time": "PMCr",
+      "location": "./data/TravelTimePMcrown.csv",
+      "label": "PM Peak"
+    }
+  ],
+  
+  "coords": "./data/taz1669.geojson",
+  "nbhdLabels": "./data/TAZ1669_Labels.csv",
+  
+  "scale": {
+    "domain": [10, 20, 30, 40, 50, 60],
+    "colours": [
+      'rgb(243,203,211)',
+      'rgb(234,169,189)',
+      'rgb(221,136,172)',
+      'rgb(202,105,157)',
+      'rgb(177,77,142)',
+      'rgb(145,53,125)',
+      'rgb(108,33,103)'
+    ]
+  }
+}
