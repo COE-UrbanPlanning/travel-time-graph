@@ -70,13 +70,13 @@ export default class InfoView extends View {
     this.div.style('display', 'flex');
     this.graphSvg.append('defs')
         .append('linearGradient')
-        .attr("id", "line-gradient")
-        .attr("gradientUnits", "userSpaceOnUse");
+        .attr('id', 'line-gradient')
+        .attr('gradientUnits', 'userSpaceOnUse');
     this.graphSvg.append('path')
         .classed('graph-line', true);
     this.graphSvg.append('path')
         .classed('graph-area', true);
-
+        
     super.init();
   }
 
