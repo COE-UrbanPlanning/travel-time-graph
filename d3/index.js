@@ -1,5 +1,6 @@
 export * from 'd3-selection';
-export { csv, json } from 'd3-request';
+export { csv, json, request } from 'd3-request';
+export { csvParse } from 'd3-dsv';
 export { queue } from 'd3-queue';
 export * from 'd3-array';
 export * from 'd3-collection';

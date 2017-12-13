@@ -17,41 +17,20 @@ function buildMatrixLookup(arr) {
   return lookup;
 }
 
-const MATRICES_SPEC = [
-  ['AMSh', './data/TravelTimeAMshoulder.csv', 'AM'],
-  ['AMCr', './data/TravelTimeAMcrown.csv', 'AM Peak'],
-  ['Off', './data/TravelTimeOff.csv', 'Midday'],
-  ['PMSh', './data/TravelTimePMshoulder.csv', 'PM'],
-  ['PMCr', './data/TravelTimePMcrown.csv', 'PM Peak']
-];
-
-const COORDS_URL = './data/taz1669.geojson';
-const LABELS_URL = './data/TAZ1669_Labels.csv';
-
-const scaleColours = [
-  'rgb(243,203,211)',
-  'rgb(234,169,189)',
-  'rgb(221,136,172)',
-  'rgb(202,105,157)',
-  'rgb(177,77,142)',
-  'rgb(145,53,125)',
-  'rgb(108,33,103)'
-];
-
-const scale = d3.scaleThreshold()
-    .domain([10, 20, 30, 40, 50, 60])
-    .range(scaleColours);
-
 class App {
-  constructor(matrices, matrixName, coords, labels) {
-    this.model = new Model(matrices, coords, labels);
-    this.model.setData('time', matrixName);
+  constructor(matrices, coords, labels, config) {
+    this.model = new Model(matrices, coords, labels, config);
+    this.model.setData('time', config.matrices[0].time);
+    
+    const scale = d3.scaleThreshold()
+        .domain(config.scale.domain)
+        .range(config.scale.colours);
     
     this.views = [
       new MapView(this.model, 'travelTime', {center: [53.54, -113.5], coords: coords, scale: scale}),
       new TooltipView(this.model, 'zoneUnderMouse', {scale: scale}),
       new InfoView(this.model, 'travelTime', {scale: scale}),
-      new SliderView(this.model, 'time', {times: MATRICES_SPEC.map(m => [m[0], m[2]])})
+      new SliderView(this.model, 'time', {spec: config.matrices})
     ];
   }
   
@@ -61,23 +40,36 @@ class App {
   }
 }
 
-var q = d3.queue();
-q.defer(d3.json, COORDS_URL)
-  .defer(d3.csv, LABELS_URL)
-MATRICES_SPEC.forEach(m => { q.defer(d3.csv, m[1]); });
-q.await((error, coords, labels, ...matrices) => {
-  const labelDict = {};
-  labels.forEach(l => {
-    labelDict[l['TAZ_New']] = l['Label'];
+function getLabels(location, callback) {
+  d3.request(location)
+      .on('error', error => { callback(error); })
+      .on('load', xhr => { callback(null, xhr.responseText); })
+      .get();
+}
+
+d3.json('./config.json', (error, config) => {
+  var q = d3.queue();
+  q.defer(d3.json, config.coordsLocation)
+    .defer(getLabels, config.nbhdLabelsLocation);
+  config.matrices.forEach(m => { q.defer(d3.csv, m.location); });
+  q.await((error, coords, labelsText, ...matrices) => {
+    const header = labelsText.split('\n')[0].split(',');
+    const labels = d3.csvParse(labelsText);
+    const labelDict = {};
+    labels.forEach(l => {
+      labelDict[l[header[0]]] = l[header[1].trim()];
+    });
+    
+    const matrixDict = {};
+    config.matrices.forEach((m, i) => {
+      matrixDict[m.time] = buildMatrixLookup(matrices[i]);
+    });
+    window.app = new App(matrixDict, coords, labelDict, config);
+    window.app.go();
   });
-  
-  const matrixDict = {};
-  MATRICES_SPEC.forEach((m, i) => {
-    matrixDict[m[0]] = buildMatrixLookup(matrices[i]);
-  });
-  window.app = new App(matrixDict, MATRICES_SPEC[0][0], coords, labelDict);
-  window.app.go();
+
+  window.d3 = d3;
 });
 
-window.d3 = d3;
+
   

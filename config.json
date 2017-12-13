@@ -1,4 +1,7 @@
 {
+  "description": "Average Auto Travel Time in Edmonton",
+  "tooltipUnits": "minutes",
+  
   "matrices": [
     {
       "time": "AMSh",
@@ -27,8 +30,8 @@
     }
   ],
   
-  "coords": "./data/taz1669.geojson",
-  "nbhdLabels": "./data/TAZ1669_Labels.csv",
+  "coordsLocation": "./data/taz1669.geojson",
+  "nbhdLabelsLocation": "./data/TAZ1669_Labels.csv",
   
   "scale": {
     "domain": [10, 20, 30, 40, 50, 60],

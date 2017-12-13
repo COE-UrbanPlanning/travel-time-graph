@@ -7,10 +7,10 @@ export default class SliderView extends View {
     super(model, streamName);
     
     this._labelDict = {};
-    options.times.forEach(l => {
-      this._labelDict[l[1]] = l[0];
+    options.spec.forEach(l => {
+      this._labelDict[l.label] = l.time;
     });
-    this.labels = options.times.map(t => t[1]);
+    this.labels = options.spec.map(m => m.label);
     
     const range = d3.range(this.labels.length).map(
         d3.scaleLinear()
