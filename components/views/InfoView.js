@@ -7,6 +7,7 @@ export default class InfoView extends View {
     super(model, streamName);
 
     this.colourScale = options.scale;
+    this.description = options.description;
     this.div = d3.select('#zone-info');
     this.zoneSpan = this.div.select('.info-zone');
     this.graphSvg = this.div.append('svg')
@@ -76,7 +77,10 @@ export default class InfoView extends View {
         .classed('graph-line', true);
     this.graphSvg.append('path')
         .classed('graph-area', true);
-        
+    
+    this.div.select('#info-title')
+        .text(this.description);
+    
     super.init();
   }
 

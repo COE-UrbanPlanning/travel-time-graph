@@ -28,8 +28,8 @@ class App {
     
     this.views = [
       new MapView(this.model, 'travelTime', {center: [53.54, -113.5], coords: coords, scale: scale}),
-      new TooltipView(this.model, 'zoneUnderMouse', {scale: scale}),
-      new InfoView(this.model, 'travelTime', {scale: scale}),
+      new TooltipView(this.model, 'zoneUnderMouse', {scale: scale, units: config.tooltipUnits}),
+      new InfoView(this.model, 'travelTime', {scale: scale, description: config.description}),
       new SliderView(this.model, 'time', {spec: config.matrices})
     ];
   }

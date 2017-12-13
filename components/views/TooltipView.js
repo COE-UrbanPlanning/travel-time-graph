@@ -7,6 +7,7 @@ export default class TooltipView extends View {
     super(model, streamName);
 
     this.scale = options.scale;
+    this.units = options.units;
   }
   
   init() {
@@ -22,7 +23,7 @@ export default class TooltipView extends View {
         .classed('tooltip-time-number', true);
     ttTime.append('span')
         .classed('tooltip-time-minutes', true)
-        .text('minutes');
+        .text(this.units);
         
     super.init();
   }
