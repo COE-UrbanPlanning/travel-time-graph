@@ -8,7 +8,7 @@ export default class SliderView extends View {
     
     this._labelDict = {};
     options.spec.forEach(l => {
-      this._labelDict[l.label] = l.time;
+      this._labelDict[l.label] = l.matrixID;
     });
     this.labels = options.spec.map(m => m.label);
     
@@ -45,17 +45,17 @@ export default class SliderView extends View {
       .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
         .classed('slider-track-overlay', true);
     
-    scale.domain().forEach(time => {
+    scale.domain().forEach(label => {
       this.svg.insert('circle', '.slider-track-overlay')
           .classed('slider-tick', true)
-          .attr('cx', scale(time))
+          .attr('cx', scale(label))
           .attr('cy', 50)
           .attr('r', 5);
       this.svg.insert('text', '.slider-track-overlay')
           .classed('slider-tick-text', true)
-          .attr('x', scale(time))
+          .attr('x', scale(label))
           .attr('y', 60)
-          .text(time);
+          .text(label);
     });
     
     var handle = this.svg.insert('circle', '.slider-track-overlay')
@@ -68,7 +68,7 @@ export default class SliderView extends View {
           const x = d3.mouse(this)[0];
           const px = scale.range().reduce((prev, curr) => Math.abs(curr - x) < Math.abs(prev - x) ? curr : prev);
           handle.attr('cx', px);
-          model.setData('time', _labelDict[_invert(px)]);
+          model.setData('matrixID', _labelDict[_invert(px)]);
         })
       );
     

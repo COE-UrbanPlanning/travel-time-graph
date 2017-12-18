@@ -20,17 +20,17 @@ function buildMatrixLookup(arr) {
 class App {
   constructor(matrices, coords, labels, config) {
     this.model = new Model(matrices, coords, labels, config);
-    this.model.setData('time', config.matrices[0].time);
+    this.model.setData('matrixID', config.matrices[0].matrixID);
     
     const scale = d3.scaleThreshold()
         .domain(config.scale.domain)
         .range(config.scale.colours);
     
     this.views = [
-      new MapView(this.model, 'travelTime', {center: [53.54, -113.5], coords: coords, scale: scale}),
+      new MapView(this.model, 'selectedData', {center: [53.54, -113.5], coords: coords, scale: scale}),
       new TooltipView(this.model, 'zoneUnderMouse', {scale: scale, units: config.tooltipUnits}),
-      new InfoView(this.model, 'travelTime', {scale: scale, description: config.description}),
-      new SliderView(this.model, 'time', {spec: config.matrices})
+      new InfoView(this.model, 'selectedData', {scale: scale, description: config.description}),
+      new SliderView(this.model, 'matrixID', {spec: config.matrices})
     ];
   }
   
@@ -62,7 +62,7 @@ d3.json('./config.json', (error, config) => {
     
     const matrixDict = {};
     config.matrices.forEach((m, i) => {
-      matrixDict[m.time] = buildMatrixLookup(matrices[i]);
+      matrixDict[m.matrixID] = buildMatrixLookup(matrices[i]);
     });
     window.app = new App(matrixDict, coords, labelDict, config);
     window.app.go();

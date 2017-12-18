@@ -85,12 +85,12 @@ export default class MapView extends View {
         .duration(500)
         .attr('fill', d => {
           let taz = key(d);
-          if (data.times[taz]) {
+          if (data.matrixData[taz]) {
             if (data.zone === taz) {
               // selected
               return 'white';
             }
-            return scale(+data.times[taz]);
+            return scale(+data.matrixData[taz]);
           }
           return 'rgb(31,31,31)';
         });

@@ -22,7 +22,7 @@ travel-time-graph's configuration options are stored in config.json. All keys ar
 - `coordsLocation`: The file location of the GeoJSON file representing the region.
 - `description`: A description of the data being presented, shown in the bottom info pane.
 - `matrices`: An array of objects, each representing a dataset to present. Each object holds the following keys:
-   - `time`: A unique ID to represent this matrix.
+   - `matrixID`: A unique ID to represent this matrix.
    - `location`: The file location of the matrix data.
    - `label`: The label that should be shown for this matrix on the top-right slider.
 - `nbhdLabelsLocation`: The file location for the mapping of zones to neighbourhood/district names.

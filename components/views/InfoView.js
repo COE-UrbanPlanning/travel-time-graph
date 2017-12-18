@@ -97,7 +97,7 @@ export default class InfoView extends View {
 
     this.graphSvg.attr('height', this.div.node().getBoundingClientRect().height - 15)
 
-    const allValues = Object.values(data.times).map(t => +t);
+    const allValues = Object.values(data.matrixData).map(t => +t);
 
     const bins = this._makeBins(allValues, 5);
     const graphData = this._getFrequency(allValues, bins, 5);

@@ -4,27 +4,27 @@
   
   "matrices": [
     {
-      "time": "AMSh",
+      "matrixID": "AMSh",
       "location": "./data/TravelTimeAMshoulder.csv",
       "label": "AM"
     },
     {
-      "time": "AMCr", 
+      "matrixID": "AMCr", 
       "location": "./data/TravelTimeAMcrown.csv", 
       "label": "AM Peak"
     },
     {
-      "time": "Off",
+      "matrixID": "Off",
       "location": "./data/TravelTimeOff.csv",
       "label": "Midday"
     },
     {
-      "time": "PMSh",
+      "matrixID": "PMSh",
       "location": "./data/TravelTimePMshoulder.csv",
       "label": "PM"
     },
     {
-      "time": "PMCr",
+      "matrixID": "PMCr",
       "location": "./data/TravelTimePMcrown.csv",
       "label": "PM Peak"
     }

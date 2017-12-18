@@ -8,35 +8,35 @@ export default class Model {
     this._labels = labels;
     
     this._state = {
-      time: new Rx.BehaviorSubject(''),
+      matrixID: new Rx.BehaviorSubject(''),
       selectedZone: new Rx.BehaviorSubject(''),
       mouseZone: new Rx.BehaviorSubject(''),
       mousePosition: new Rx.BehaviorSubject([])
     };
     
     this.streams = {
-      time: this._state.time,
-      travelTime: Rx.Observable.combineLatest(
-        this._state.time,
+      matrixID: this._state.matrixID,
+      selectedData: Rx.Observable.combineLatest(
+        this._state.matrixID,
         this._state.selectedZone
-      ).map(([time, zone]) => {
+      ).map(([matrixID, zone]) => {
         if (!zone) {
-          return {times: {}};
+          return {matrixData: {}};
         }
         return {
           zone: zone,
           zoneName: labels[zone],
-          times: this._matrices[time][zone]
+          matrixData: this._matrices[matrixID][zone]
         };
       }),
       
       zoneUnderMouse: Rx.Observable.combineLatest(
-        this._state.time,
+        this._state.matrixID,
         this._state.selectedZone,
         this._state.mouseZone,
         this._state.mousePosition
-      ).map(([time, sZone, mZone, mouse]) => {
-        if (!sZone || !mZone || !time) {
+      ).map(([matrixID, sZone, mZone, mouse]) => {
+        if (!sZone || !mZone || !matrixID) {
           return {};
         }
         return {
@@ -44,7 +44,7 @@ export default class Model {
           zoneName: labels[mZone],
           mouseX: mouse.x,
           mouseY: mouse.y,
-          time: this._matrices[time][sZone][mZone]
+          value: this._matrices[matrixID][sZone][mZone]
         };
       })
     };

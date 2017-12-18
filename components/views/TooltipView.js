@@ -17,12 +17,12 @@ export default class TooltipView extends View {
       
     this.tooltip.append('div')
         .classed('tooltip-zone', true);
-    var ttTime = this.tooltip.append('div')
-        .classed('tooltip-time', true);
-    ttTime.append('span')
-        .classed('tooltip-time-number', true);
-    ttTime.append('span')
-        .classed('tooltip-time-minutes', true)
+    var ttContent = this.tooltip.append('div')
+        .classed('tooltip-content', true);
+    ttContent.append('span')
+        .classed('tooltip-content-value', true);
+    ttContent.append('span')
+        .classed('tooltip-content-units', true)
         .text(this.units);
         
     super.init();
@@ -32,12 +32,12 @@ export default class TooltipView extends View {
     const {scale, tooltip} = this;
     
     if (data['zoneName'] && data['mouseX'] && data['mouseY']) {
-      const minutes = Math.round(data['time']);
+      const value = Math.round(data['value']);
       tooltip.select('.tooltip-zone')
           .text(data['zoneName']);
-      tooltip.select('.tooltip-time-number')
-          .style('color', scale(minutes))
-          .text('~' + minutes);
+      tooltip.select('.tooltip-content-value')
+          .style('color', scale(value))
+          .text('~' + value);
       
       tooltip.classed('hidden', false);
       
